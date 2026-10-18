@@ -3,6 +3,7 @@ import { addDays, todayISO, weekdayDate } from '../dates';
 import { dayIndex, emptyDay, episodeOf, MAX_PER_DAY, seasonNumber, tint, votes } from '../season';
 import { dayPath, save, useModel } from '../store';
 import type { Day, Season, Verdict } from '../types';
+import { MOODS, moodClass, moodLabel } from '../mood';
 import { Dial } from '../ui/Dial';
 import { Icon } from '../ui/Icon';
 
@@ -99,6 +100,18 @@ export function Today({ sync }: { sync: ReactNode }) {
             </div>
           );
         })}
+      </div>
+
+      <p className="sec-label"><span>Umore</span><span>{iso === today ? "com'è stata la giornata?" : "com'era la giornata?"}</span></p>
+      <div className="card mood">
+        <div className="mood-scale" role="radiogroup" aria-label="Umore della giornata">
+          {MOODS.map((m) => (
+            <button key={m.v} role="radio" aria-checked={day.mood === m.v} aria-label={m.label} className={moodClass(m.v)}
+              onClick={() => write({ ...day, mood: day.mood === m.v ? null : m.v })}><i /></button>
+          ))}
+        </div>
+        <div className="mood-ends" aria-hidden="true"><span>Spiacevole</span><span>Piacevole</span></div>
+        <p className="mood-now" aria-live="polite">{day.mood != null ? moodLabel(day.mood) : 'Tocca il punto che ti somiglia di più'}</p>
       </div>
 
       <Tell key={iso} iso={iso} day={day} />

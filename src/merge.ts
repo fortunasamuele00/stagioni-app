@@ -18,6 +18,7 @@ function mergeDay(local: Day, remote: Day): Day {
   }
   for (const [k, v] of Object.entries(remote.antagonists ?? {})) if (out.antagonists[k] == null && v != null) out.antagonists[k] = v;
   if (!out.story && remote.story) out.story = remote.story;
+  if (out.mood == null && remote.mood != null) out.mood = remote.mood;
   return out;
 }
 

@@ -25,6 +25,8 @@ export interface Day {
   antagonists: Record<string, Verdict>;
   story: string;
   source: Record<string, Source>;
+  /** Umore della giornata, da -3 (molto spiacevole) a 3 (molto piacevole). Assente o null = non segnato. */
+  mood?: number | null;
 }
 
 export interface Goal { text: string; done: boolean }
@@ -38,7 +40,7 @@ export interface Episode {
   directorNote: string;
 }
 
-export interface WishItem { id: string; name: string; added: string; removed?: string }
+export interface WishItem { id: string; name: string; added: string; removed?: string; /** prezzo in euro */ price?: number }
 export interface Wishlist { items: WishItem[] }
 
 export interface Settings { owner: string; repo: string; token: string }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type CSSProperties } from 'react';
 import { EpisodeScreen } from './screens/EpisodeScreen';
 import { SeasonScreen } from './screens/SeasonScreen';
 import { SettingsScreen } from './screens/SettingsScreen';
@@ -61,13 +61,16 @@ export function App() {
   return (
     <>
       <main className="app">
+        <div key={tab} className="screen-in">
         {tab === 'oggi' && <Today sync={<SyncChip onClick={() => go('impostazioni')} />} />}
         {tab === 'stagione' && <SeasonScreen />}
         {tab === 'episodio' && <EpisodeScreen />}
         {tab === 'lista' && <WishlistScreen />}
         {tab === 'impostazioni' && <SettingsScreen onClose={() => go('oggi')} />}
+        </div>
       </main>
-      <nav className="seg" aria-label="Sezioni">
+      <nav className="seg" aria-label="Sezioni" style={{ '--i': Math.max(0, TABS.findIndex(([k]) => k === tab)) } as CSSProperties}>
+        <span className={`seg-pill${tab === 'impostazioni' ? ' off' : ''}`} aria-hidden="true" />
         {TABS.map(([k, label]) => <button key={k} aria-current={tab === k ? 'page' : undefined} onClick={() => go(k)}>{label}</button>)}
       </nav>
     </>

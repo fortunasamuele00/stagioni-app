@@ -20,6 +20,7 @@ export function emptyDay(s: Season, iso: string): Day {
     antagonists: Object.fromEntries(s.antagonists.map((x) => [x.key, null])),
     story: '',
     source: {},
+    mood: null,
   };
 }
 
