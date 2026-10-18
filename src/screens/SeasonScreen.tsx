@@ -52,10 +52,10 @@ export function SeasonScreen() {
       </div>
 
       <div className="duo">
-        <div className="mini"><span className="chip ink">Voti totali</span><b>{total}<small>su {elapsed * max}</small></b></div>
-        <div className="mini"><span className="chip t0">Con una scena</span><b>{streak(days, end, (d) => votes(d) > 0, season.start)}<small>giorni di fila</small></b></div>
-        {scroll && <div className="mini"><span className="chip win"><Icon name="scroll" size={16} />{scroll.label}</span><b>{streak(days, end, (d) => d?.antagonists[scroll.key] === 'win', season.start)}<small>vinti di fila</small></b></div>}
-        {sfida && <div className="mini"><span className="chip win"><Icon name="sfida" size={16} />{sfida.label}</span><b>{streak(days, end, (d) => d?.antagonists[sfida.key] === 'win', season.start)}<small>vinti di fila</small></b></div>}
+        <div className="mini"><span className="chip ink">Voti</span><b>{total}<small>voti finora, su {elapsed * max} possibili</small></b></div>
+        <div className="mini"><span className="chip t0">Scene</span><b>{streak(days, end, (d) => votes(d) > 0, season.start)}<small>giorni di fila con almeno una scena fatta</small></b></div>
+        {scroll && <div className="mini"><span className="chip win"><Icon name="scroll" size={16} />{scroll.label}</span><b>{streak(days, end, (d) => d?.antagonists[scroll.key] === 'win', season.start)}<small>giorni di fila in cui l'hai battuto</small></b></div>}
+        {sfida && <div className="mini"><span className="chip win"><Icon name="sfida" size={16} />{sfida.label}</span><b>{streak(days, end, (d) => d?.antagonists[sfida.key] === 'win', season.start)}<small>giorni di fila in cui l'hai battuta</small></b></div>}
       </div>
     </>
   );

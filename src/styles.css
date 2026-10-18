@@ -178,7 +178,8 @@ button:disabled { cursor: default; opacity: .35; }
 .mini { background: var(--card); border-radius: var(--r-lg); padding: var(--s4); min-height: 132px; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start; gap: var(--s3); }
 .mini .chip { white-space: normal; }
 .mini b { font: 500 46px/1 var(--font); letter-spacing: -1.5px; }
-.mini b small { display: block; font: var(--t-caption); color: var(--ink-2); letter-spacing: 0; margin-top: 6px; }
+.mini b small { display: block; font: var(--t-caption); color: var(--ink-2); letter-spacing: 0; margin-top: 8px; }
+.mini .chip { max-width: 100%; }
 
 /* ——— episodio ——— */
 .ep-nav { display: flex; align-items: center; justify-content: space-between; gap: var(--s2); }
