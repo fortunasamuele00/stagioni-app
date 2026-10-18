@@ -6,9 +6,6 @@ import type { Day, Season, Verdict } from '../types';
 import { Dial } from '../ui/Dial';
 import { Icon } from '../ui/Icon';
 
-const NEXT: Record<string, Verdict> = { null: 'win', win: 'lose', lose: null };
-const VERDICT = { win: 'Vinto', lose: 'Perso', null: 'Non segnato' } as const;
-const vClass = (v: Verdict) => (v === 'win' ? 'win' : v === 'lose' ? 'lose' : 'none');
 
 function Story({ season, days, iso, today }: { season: Season; days: Record<string, Day>; iso: string; today: string }) {
   const idx = dayIndex(season, iso), max = MAX_PER_DAY(season);
@@ -39,7 +36,7 @@ function Story({ season, days, iso, today }: { season: Season; days: Record<stri
   );
 }
 
-export function Today({ onSettings, sync }: { onSettings: () => void; sync: ReactNode }) {
+export function Today({ sync }: { sync: ReactNode }) {
   const { season, days } = useModel();
   const [today, setToday] = useState(todayISO);
   const [iso, setIso] = useState(today);
@@ -53,14 +50,13 @@ export function Today({ onSettings, sync }: { onSettings: () => void; sync: Reac
   const day: Day = days[iso] ?? emptyDay(season, iso);
   const write = (next: Day) => void save(dayPath(iso), next, `Giorno ${iso}`);
   const toggle = (key: string) => write({ ...day, scenes: { ...day.scenes, [key]: !day.scenes[key] }, source: { ...day.source, [key]: 'app' } });
-  const cycle = (key: string) => write({ ...day, antagonists: { ...day.antagonists, [key]: NEXT[String(day.antagonists[key] ?? null)] } });
+  // Tocchi Vinto o Perso; ritoccare la scelta attiva la toglie (torna "non segnato").
+  const pick = (key: string, v: Verdict) => write({ ...day, antagonists: { ...day.antagonists, [key]: day.antagonists[key] === v ? null : v } });
   const min = addDays(season.start, -1);
 
   return (
     <>
-      <div className="topbar">{sync}<button className="icon-btn" onClick={onSettings} aria-label="Impostazioni"><Icon name="impostazioni" /></button></div>
-
-      <div className="daynav mt">
+      <div className="daynav">
         <button className="icon-btn" onClick={() => setIso(addDays(iso, -1))} disabled={iso <= min} aria-label="Giorno precedente"><Icon name="left" /></button>
         <span className="lbl" aria-live="polite">{iso === today ? 'Oggi' : iso === addDays(today, -1) ? 'Ieri' : 'Giorno passato'}<small>{weekdayDate(iso)}</small></span>
         <button className="icon-btn" onClick={() => setIso(addDays(iso, 1))} disabled={iso >= today} aria-label="Giorno successivo"><Icon name="right" /></button>
@@ -85,21 +81,29 @@ export function Today({ onSettings, sync }: { onSettings: () => void; sync: Reac
         ))}
       </div>
 
-      <p className="sec-label"><span>Tu contro</span><span>tocca per cambiare</span></p>
+      <p className="sec-label"><span>Tu contro</span><span>com'è andata?</span></p>
       <div className="scenes">
         {season.antagonists.map((a) => {
           const v = day.antagonists[a.key] ?? null;
           return (
-            <button key={a.key} className="vs" onClick={() => cycle(a.key)} aria-label={`Tu contro ${a.label}: ${VERDICT[String(v) as keyof typeof VERDICT]}. Tocca per cambiare.`}>
-              <span className="me">Tu</span><span className="x">vs</span>
-              <span className="txt">{a.label}{a.hint && <small>{a.hint}</small>}</span>
-              <span className={`chip ${vClass(v)}`}>{VERDICT[String(v) as keyof typeof VERDICT]}</span>
-            </button>
+            <div key={a.key} className="vs" role="group" aria-label={`Tu contro ${a.label}`}>
+              <div className="vs-head">
+                <span className="me">Tu</span><span className="x">vs</span>
+                <span className="txt">{a.label}{a.hint && <small>{a.hint}</small>}</span>
+                {v === null && <span className="chip none">Non segnato</span>}
+              </div>
+              <div className="pick">
+                <button className="win" aria-pressed={v === 'win'} onClick={() => pick(a.key, 'win')}><Icon name="check" size={18} />Vinto</button>
+                <button className="lose" aria-pressed={v === 'lose'} onClick={() => pick(a.key, 'lose')}><Icon name="x" size={18} />Perso</button>
+              </div>
+            </div>
           );
         })}
       </div>
 
       <Tell key={iso} iso={iso} day={day} />
+
+      <div className="foot">{sync}</div>
     </>
   );
 }

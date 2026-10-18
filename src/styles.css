@@ -71,13 +71,18 @@ button:disabled { cursor: default; opacity: .35; }
 .field input::placeholder, .field textarea::placeholder { color: var(--ink-2); opacity: .8; }
 .field small { display: block; margin-top: 6px; font: var(--t-caption); color: var(--ink-2); }
 
-/* ——— barra di sync ——— */
+/* ——— testata delle impostazioni ——— */
 .topbar { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); min-height: 48px; }
-.sync { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 0 12px; border-radius: var(--r-chip); font: var(--t-caption); color: var(--ink-2); background: var(--card); box-shadow: 0 0 0 1px var(--line); }
-.sync i { width: 8px; height: 8px; border-radius: 50%; background: var(--win); }
-.sync.wait i { background: var(--ink-3); }
-.sync.err { color: var(--lose); }
-.sync.err i { background: var(--lose); }
+
+/* ——— stato della sync, in fondo a Oggi ——— */
+.foot { margin-top: var(--s5); }
+.sync-row { display: flex; align-items: center; justify-content: space-between; gap: var(--s3); width: 100%; min-height: 56px; padding: 0 var(--s4); border-radius: var(--r-lg); background: var(--card); text-align: left; }
+.sync-row .state { display: inline-flex; align-items: center; gap: 8px; font: var(--t-caption); color: var(--ink-2); }
+.sync-row .state i { width: 8px; height: 8px; border-radius: 50%; background: var(--win); flex: none; }
+.sync-row.wait .state i { background: var(--ink-3); }
+.sync-row.err .state { color: var(--lose); }
+.sync-row.err .state i { background: var(--lose); }
+.sync-row .go { display: inline-flex; align-items: center; gap: 6px; font: var(--t-label); color: var(--ink-2); }
 
 /* ——— navigazione giorni ——— */
 .daynav { display: flex; align-items: center; justify-content: space-between; gap: var(--s2); }
@@ -122,12 +127,16 @@ button:disabled { cursor: default; opacity: .35; }
 .scene[aria-pressed="true"].t2 { background: var(--t2-bg); } .scene[aria-pressed="true"].t2 .dot-ic { color: var(--t2); background: var(--card); }
 
 /* ——— tu contro ——— */
-.vs { display: flex; align-items: center; gap: var(--s3); width: 100%; min-height: 76px; padding: var(--s3) var(--s4); border-radius: var(--r-lg); background: var(--card); text-align: left; }
+.vs { padding: var(--s3) var(--s3) var(--s3) var(--s4); border-radius: var(--r-lg); background: var(--card); }
+.vs-head { display: flex; align-items: center; gap: var(--s3); min-height: 48px; }
 .vs .me { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: var(--card); font: 600 13px var(--font); flex: none; }
 .vs .x { font: 500 13px var(--font); color: var(--ink-3); }
 .vs .txt { flex: 1; min-width: 0; font: var(--t-head); }
 .vs .txt small { display: block; font: var(--t-caption); color: var(--ink-2); }
-.vs .chip { min-width: 96px; justify-content: center; flex: none; }
+.pick { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s2); margin-top: var(--s3); }
+.pick button { min-height: 48px; border-radius: var(--r-chip); display: inline-flex; align-items: center; justify-content: center; gap: 6px; font: var(--t-label); color: var(--ink-2); box-shadow: inset 0 0 0 1.5px var(--line); transition: background .15s var(--ease), color .15s var(--ease); }
+.pick button.win[aria-pressed="true"] { background: var(--win-bg); color: var(--win); box-shadow: inset 0 0 0 1.5px var(--win); }
+.pick button.lose[aria-pressed="true"] { background: var(--lose-bg); color: var(--lose); box-shadow: inset 0 0 0 1.5px var(--lose); }
 
 /* ——— barra in basso ——— */
 .seg { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(env(safe-area-inset-bottom) + 12px); width: min(448px, calc(100% - 32px)); display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 5px; background: var(--card); border-radius: var(--r-chip); box-shadow: 0 0 0 1px var(--line), 0 8px 24px rgba(0, 0, 0, .08); z-index: 10; }

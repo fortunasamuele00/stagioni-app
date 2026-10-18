@@ -6,6 +6,7 @@ import { Today } from './screens/Today';
 import { WishlistScreen } from './screens/WishlistScreen';
 import { useModel } from './store';
 import { pull, useSync } from './sync';
+import { Icon } from './ui/Icon';
 
 const TABS = [['oggi', 'Oggi'], ['stagione', 'Stagione'], ['episodio', 'Episodio'], ['lista', 'Lista']] as const;
 type Tab = (typeof TABS)[number][0] | 'impostazioni';
@@ -24,7 +25,12 @@ function SyncChip({ onClick }: { onClick: () => void }) {
       : s.busy ? ['wait', 'Sincronizzo…']
         : s.pending ? ['wait', online ? `${s.pending} in coda` : `Offline · ${s.pending} in coda`]
           : ['', online ? 'Sincronizzato' : 'Offline'];
-  return <button className={`sync ${cls}`} onClick={onClick}><i />{text}</button>;
+  return (
+    <button className={`sync-row ${cls}`} onClick={onClick} aria-label={`${text}. Apri le impostazioni`}>
+      <span className="state"><i />{text}</span>
+      <span className="go"><Icon name="impostazioni" size={18} />Impostazioni</span>
+    </button>
+  );
 }
 
 export function App() {
@@ -55,7 +61,7 @@ export function App() {
   return (
     <>
       <main className="app">
-        {tab === 'oggi' && <Today onSettings={() => go('impostazioni')} sync={<SyncChip onClick={() => go('impostazioni')} />} />}
+        {tab === 'oggi' && <Today sync={<SyncChip onClick={() => go('impostazioni')} />} />}
         {tab === 'stagione' && <SeasonScreen />}
         {tab === 'episodio' && <EpisodeScreen />}
         {tab === 'lista' && <WishlistScreen />}
