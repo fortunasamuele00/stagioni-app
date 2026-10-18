@@ -52,7 +52,7 @@ export function Today({ sync }: { sync: ReactNode }) {
   const write = (next: Day) => void save(dayPath(iso), next, `Giorno ${iso}`);
   const toggle = (key: string) => write({ ...day, scenes: { ...day.scenes, [key]: !day.scenes[key] }, source: { ...day.source, [key]: 'app' } });
   // Tocchi Vinto o Perso; ritoccare la scelta attiva la toglie (torna "non segnato").
-  const pick = (key: string, v: Verdict) => write({ ...day, antagonists: { ...day.antagonists, [key]: day.antagonists[key] === v ? null : v } });
+  const pick = (key: string, v: Verdict) => write({ ...day, antagonists: { ...day.antagonists, [key]: day.antagonists[key] === v ? null : v }, source: { ...day.source, [key]: 'app' } });
   const min = addDays(season.start, -1);
 
   return (
@@ -90,7 +90,7 @@ export function Today({ sync }: { sync: ReactNode }) {
             <div key={a.key} className="vs" role="group" aria-label={`Tu contro ${a.label}`}>
               <div className="vs-head">
                 <span className="me">Tu</span><span className="x">vs</span>
-                <span className="txt">{a.label}{a.hint && <small>{a.hint}</small>}</span>
+                <span className="txt">{a.label}{v !== null && day.source[a.key] === 'diario' && <span className="src">dal diario</span>}{a.hint && <small>{a.hint}</small>}</span>
                 {v === null && <span className="chip none">Non segnato</span>}
               </div>
               <div className="pick">

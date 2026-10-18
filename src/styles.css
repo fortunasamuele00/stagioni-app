@@ -243,4 +243,8 @@ button:disabled { cursor: default; opacity: .35; }
 .field small.err { color: var(--lose); }
 .mini b.money { font-size: 34px; letter-spacing: -1px; }
 
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+  /* la pillola scorre comunque, senza rimbalzo: dice dove sei andato */
+  .seg-pill { transition: transform .2s ease-out !important; }
+}

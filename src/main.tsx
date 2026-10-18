@@ -7,7 +7,15 @@ import { applyRemote, getModel, loadLocal } from './store';
 import { isConfigured, pull } from './sync';
 import './styles.css';
 
-registerSW({ immediate: true });
+// Su iPhone l'app installata può restare ferma su una versione vecchia: cerco aggiornamenti
+// all'apertura e ogni volta che torna in primo piano. Con autoUpdate la pagina si ricarica da sola.
+registerSW({
+  immediate: true,
+  onRegisteredSW(_url, reg) {
+    if (!reg) return;
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') void reg.update(); });
+  },
+});
 
 // Solo in sviluppo e senza repo collegato: carica i file di seed-data/ per provare l'app in locale.
 async function devSeed() {
