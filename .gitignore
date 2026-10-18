@@ -1,0 +1,7 @@
+node_modules
+dist
+dev-dist
+.DS_Store
+# dati personali: vivono nel repo privato stagioni-data, non nel codice
+seed-data
+design
